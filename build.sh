@@ -25,3 +25,4 @@ if [ $# -eq 0 ]; then
 else
     comp $1
 fi
+

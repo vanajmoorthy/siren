@@ -148,7 +148,7 @@ class Parser:
 
         else:
             self.abort("Invalid statement at {} ({})".format(
-                self.curToken.text, self.curToken.kind.nams))
+                self.curToken.text, self.curToken.kind.name))
 
         self.nl()
 

@@ -1,0 +1,7 @@
+LET billAmount = 0
+PRINT "Please enter your phone bill"
+INPUT billAmount
+
+IF billAmount > 1000 THEN
+    PRINT "wow your phone bill is high"
+ENDIF
