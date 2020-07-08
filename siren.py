@@ -11,11 +11,10 @@ def main():
     with open(sys.argv[1], "r") as inputFile:
         input = inputFile.read()
 
-    # Initialize the lexer and parser.
     lexer = Lexer(input)
     parser = Parser(lexer)
 
-    parser.program()  # Start the parser.
+    parser.program()
     print("Parsing completed.")
 
 

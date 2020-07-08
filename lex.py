@@ -105,7 +105,6 @@ class Lexer:
             token = Token(self.curChar, TokenType.SLASH)
 
         elif self.curChar == "=":
-            # Check whether this token is = or ==
             if self.peek() == "=":
                 lastChar = self.curChar
                 self.nextChar()
@@ -113,7 +112,6 @@ class Lexer:
             else:
                 token = Token(self.curChar, TokenType.EQ)
         elif self.curChar == ">":
-            # Check whether this is token is > or >=
             if self.peek() == "=":
                 lastChar = self.curChar
                 self.nextChar()
@@ -121,7 +119,6 @@ class Lexer:
             else:
                 token = Token(self.curChar, TokenType.GT)
         elif self.curChar == "<":
-            # Check whether this is token is < or <=
             if self.peek() == "=":
                 lastChar = self.curChar
                 self.nextChar()
@@ -136,12 +133,10 @@ class Lexer:
             else:
                 self.abort("Expected !=, got !" + self.peek())
         elif self.curChar == '"':
-            # Get characters between quotations.
             self.nextChar()
             startPos = self.curPos
 
             while self.curChar != '"':
-                # Ban special chars in string
                 if (
                     self.curChar == "\r"
                     or self.curChar == "\n"
@@ -152,7 +147,7 @@ class Lexer:
                     self.abort("Illegal character in string.")
                 self.nextChar()
 
-            tokText = self.source[startPos : self.curPos]  # Get the substring.
+            tokText = self.source[startPos: self.curPos]
             token = Token(tokText, TokenType.STRING)
         elif self.curChar.isdigit():
             startPos = self.curPos
@@ -161,35 +156,30 @@ class Lexer:
             if self.peek() == ".":
                 self.nextChar()
 
-                # Must have at least one digit after decimal.
                 if not self.peek().isdigit():
                     self.abort("Illegal character in number.")
                 while self.peek().isdigit():
                     self.nextChar()
 
-            tokText = self.source[startPos : self.curPos + 1]  # Get the substring.
+            tokText = self.source[startPos: self.curPos + 1]
             token = Token(tokText, TokenType.NUMBER)
         elif self.curChar.isalpha():
-            # Leading character is a letter, so this must be an identifier or a keyword.
-            # Get all consecutive alpha numeric characters.
             startPos = self.curPos
             while self.peek().isalnum():
                 self.nextChar()
 
-            # Check if the token is in the list of keywords.
-            tokText = self.source[startPos : self.curPos + 1]  # Get the substring.
+            tokText = self.source[startPos: self.curPos + 1]
             keyword = Token.checkIfKeyword(tokText)
-            if keyword == None:  # Identifier
+            if keyword == None:
                 token = Token(tokText, TokenType.IDENT)
-            else:  # Keyword
+            else:
                 token = Token(tokText, keyword)
         elif self.curChar == "\n":
             token = Token(self.curChar, TokenType.NEWLINE)
         elif self.curChar == "\0":
             token = Token(self.curChar, TokenType.EOF)
         else:
-            self.abort("Unkown token {}".format(self.curChar))
+            self.abort("Unknown token {}".format(self.curChar))
 
         self.nextChar()
         return token
-
